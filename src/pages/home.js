@@ -13,8 +13,8 @@ class home extends Component {
     axios
       .get('./screams')
       .then(res => {
-        console.log(res.data);
-        console.log(res);
+        console.log('res.data', res.data);
+        console.log('res', res);
         this.setState({ screams: res.data });
       })
       .catch(err => {
