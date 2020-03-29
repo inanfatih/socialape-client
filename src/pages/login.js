@@ -11,33 +11,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const styles = {
-  form: {
-    textAlign: 'center',
-  },
-  image: {
-    margin: '20px auto 20px auto',
-    width: 100,
-  },
-  pageTitle: {
-    margin: '5px auto 5px auto',
-  },
-  textField: {
-    margin: '5px auto 5px auto',
-  },
-  button: {
-    marginTop: 20,
-    position: 'relative',
-  },
-  customError: {
-    color: 'red',
-    fontSize: '0.8rem',
-    marginTop: 10,
-  },
-  progress: {
-    position: 'absolute',
-  },
-};
+const styles = theme => ({
+  ...theme.spreadThis,
+});
 
 class login extends Component {
   constructor() {
@@ -50,6 +26,8 @@ class login extends Component {
     };
   }
 
+  debugger;
+
   handleSubmit = event => {
     console.log('handleSubmit', event);
     event.preventDefault();
@@ -60,9 +38,10 @@ class login extends Component {
       password: this.state.password,
     };
     axios
-      .post('/login', userData)
+      .post('/login', userData) //package.json'da proxy tanimlandigindan dolayi /login'in basina default olarak proxy adresi geliyor
       .then(res => {
         console.log(res.data);
+        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
         this.setState({
           loading: false,
         });
@@ -138,7 +117,7 @@ class login extends Component {
             </Button>
             <br />
             <small>
-              don't have an account ? sign up <Link to='/signup'> here</Link>
+              Don't have an account ? sign up <Link to='/signup'> here</Link>
             </small>
           </form>
         </Grid>
