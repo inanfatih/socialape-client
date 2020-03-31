@@ -11,6 +11,8 @@ import jwtDecode from 'jwt-decode';
 //Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import { SET_AUTHENTICATED } from './redux/types';
+import { logoutUser, getUserData } from './redux/actions/userActions';
 
 //Components
 import Navbar from './components/Navbar';
@@ -20,12 +22,11 @@ import AuthRoute from './util/AuthRoute';
 import home from './pages/home';
 import signup from './pages/signup';
 import login from './pages/login';
+import axios from 'axios';
 
 //App.js uygulamayi calistirinca ya da refresh edince calisiyor.
 
 const theme = createMuiTheme(themeFile);
-
-let authenticated;
 
 //localStorage, refresh etsem de korunuyor.
 const token = localStorage.FBIdToken;
@@ -37,9 +38,11 @@ if (token) {
   console.log('decodedToken', decodedToken);
   if (decodedToken.exp * 1001 < Date.now()) {
     window.location.href = '/login'; //package.json'da yer alan proxy ekleniyor tum linklerin basina.
-    authenticated = false;
+    store.dispatch(logoutUser);
   } else {
-    authenticated = true;
+    store.dispatch({ type: SET_AUTHENTICATED });
+    axios.defaults.headers.common['Authorization'] = token;
+    store.dispatch(getUserData());
   }
 }
 
@@ -57,13 +60,11 @@ class App extends Component {
                   exact
                   path='/login'
                   component={login}
-                  authenticated={authenticated}
                 />
                 <AuthRoute
                   exact
                   path='/signup'
                   component={signup}
-                  authenticated={authenticated}
                 />
               </Switch>
             </div>

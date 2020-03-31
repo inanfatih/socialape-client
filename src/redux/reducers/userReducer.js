@@ -1,11 +1,4 @@
-import {
-  SET_USER,
-  SET_ERRORS,
-  CLEAR_ERRORS,
-  LOADING_UI,
-  SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED,
-} from '../types';
+import { SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED } from '../types';
 
 // buradaki initial state, store'daki reducers'in user'inin initial state i
 const initialState = {
