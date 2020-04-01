@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import EditDetails from './EditDetails';
 //Mui stuff
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -16,7 +17,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import LocationOn from '@material-ui/icons/LocationOn';
 import LinkIcon from '@material-ui/icons/Link';
 import CalendarToday from '@material-ui/icons/CalendarToday';
-
+import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 //Redux
 import { connect } from 'react-redux';
 
@@ -83,6 +84,9 @@ class Profile extends Component {
     fileInput.click(); // bu, resim ekleme penceresini acacak
   };
 
+  handleLogout = () => {
+    this.props.logoutUser();
+  };
   render() {
     const {
       classes,
@@ -125,11 +129,11 @@ class Profile extends Component {
               <hr />
               {location && (
                 <Fragment>
-                  <LocationOn color='primary'>
-                    <span>{location}</span>
-                  </LocationOn>
+                  <LocationOn color='primary' />
+                  <span>{location}</span>
                 </Fragment>
               )}
+              <hr />
               {website && (
                 <Fragment>
                   <LinkIcon color='primary' />
@@ -143,6 +147,13 @@ class Profile extends Component {
               <CalendarToday color='primary' />{' '}
               <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
             </div>
+
+            <Tooltip title='Logout' placement='top'>
+              <IconButton onClick={this.handleLogout}>
+                <KeyboardReturn color='primary' />
+              </IconButton>
+            </Tooltip>
+            <EditDetails />
           </div>
         </Paper>
       ) : (
@@ -166,6 +177,7 @@ class Profile extends Component {
               </Button>
             </div>
           </Typography>
+          <EditDetails />
         </Paper>
       )
     ) : (
