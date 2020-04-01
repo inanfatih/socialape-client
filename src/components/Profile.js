@@ -179,7 +179,6 @@ class Profile extends Component {
               </Button>
             </div>
           </Typography>
-          <EditDetails />
         </Paper>
       )
     ) : (
