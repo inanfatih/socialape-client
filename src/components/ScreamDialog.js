@@ -8,17 +8,19 @@ import { Link } from 'react-router-dom';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 //Icons
 import CloseIcon from '@material-ui/icons/Close';
+import ChatIcon from '@material-ui/icons/Chat';
 import UnfoldMore from '@material-ui/icons/UnfoldMore';
 
 //Redux
 import { connect } from 'react-redux';
 import { getScream } from '../redux/actions/dataActions';
+import LikeButton from './LikeButton';
 
 const styles = theme => ({
   ...theme.spreadThis,
@@ -29,7 +31,7 @@ const styles = theme => ({
   profileImage: {
     maxWidth: 200,
     height: 200,
-    borderRadious: '50%',
+    borderRadius: '50%',
     objectFit: 'cover', // bununla resmin strech edilmemesini saglamis oluyoruz
   },
   dialogContent: {
@@ -38,6 +40,15 @@ const styles = theme => ({
   closeButton: {
     position: 'absolute',
     left: '90%',
+  },
+  expandButton: {
+    position: 'absolute',
+    left: '90%',
+  },
+  spinnerDiv: {
+    textAlign: 'center',
+    marginTop: 50,
+    marginBottom: 50,
   },
 });
 
@@ -67,7 +78,9 @@ class ScreamDialog extends Component {
       UI: { loading },
     } = this.props;
     const dialogMarkup = loading ? (
-      <CircularProgress size={200} />
+      <div className={classes.spinnerDiv}>
+        <CircularProgress size={200} thickness={2} />
+      </div>
     ) : (
       <Grid container spacing={16}>
         <Grid item sm={5}>
@@ -83,10 +96,16 @@ class ScreamDialog extends Component {
           </Typography>
           <hr className={classes.invisibleSeparator} />
           <Typography variant='body2' color='textSecondary'>
-            {dayjs(createdAt).format('h:mm a, MMM DD YYYY')}
+            {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
           </Typography>
           <hr className={classes.invisibleSeparator} />
-          <Typography variant='boy1'>{body}</Typography>
+          <Typography variant='body1'>{body}</Typography>
+          <LikeButton screamId={screamId} />
+          <span>{likeCount} likes</span>
+          <MyButton tip='comments'>
+            <ChatIcon color='primary' />
+          </MyButton>
+          <span>{commentCount} comments</span>
         </Grid>
       </Grid>
     );
