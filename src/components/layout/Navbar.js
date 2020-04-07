@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PostScream from '../scream/PostScream';
-
 import MyButton from '../../util/MyButton';
+import PostScream from '../scream/PostScream';
+import Notifications from './Notifications';
 //MUI => Material UI staff
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,7 +12,6 @@ import Button from '@material-ui/core/Button';
 
 //Icons
 import HomeIcon from '@material-ui/icons/Home';
-import Notifications from '@material-ui/icons/Notifications';
 
 //Yukaridaki yerine asagidaki sekilde tum material-ui/core u import edersek, compile zamaninda tum library'i indirmek zorunda kaliriz. Bu da compile time'da hizi dusuruyor.
 //import {AppBar, ToolBar} from '@material-ui/core';
@@ -31,9 +30,7 @@ class Navbar extends Component {
                   <HomeIcon />
                 </MyButton>
               </Link>
-              <MyButton tip='Notifications'>
-                <Notifications />
-              </MyButton>
+              <Notifications />
             </Fragment>
           ) : (
             <Fragment>
@@ -58,7 +55,7 @@ Navbar.propTypes = {
   authenticated: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   authenticated: state.user.authenticated,
 });
 

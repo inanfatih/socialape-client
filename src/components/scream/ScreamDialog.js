@@ -23,7 +23,7 @@ import { connect } from 'react-redux';
 import { getScream, clearErrors } from '../../redux/actions/dataActions';
 import LikeButton from './LikeButton';
 
-const styles = theme => ({
+const styles = (theme) => ({
   ...theme.spreadThis,
 
   profileImage: {
@@ -53,12 +53,32 @@ const styles = theme => ({
 class ScreamDialog extends Component {
   state = {
     open: false,
+    oldPath: '',
+    newPath: '',
   };
+
+  componentDidMount() {
+    if (this.props.openDialog) {
+      this.handleOpen();
+    }
+  }
+
   handleOpen = () => {
-    this.setState({ open: true });
+    let oldPath = window.location.pathname;
+
+    const { userHandle, screamId } = this.props;
+    const newPath = `/users/${userHandle}/scream/${screamId}`;
+
+    if (oldPath === newPath) oldPath = `/users/${userHandle}`;
+
+    window.history.pushState(null, null, newPath);
+
+    this.setState({ open: true, oldPath, newPath });
     this.props.getScream(this.props.screamId);
   };
+
   handleClose = () => {
+    window.history.pushState(null, null, this.state.oldPath);
     this.setState({ open: false });
     this.props.clearErrors();
   };
@@ -151,7 +171,7 @@ ScreamDialog.propTypes = {
   UI: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   scream: state.data.scream,
   UI: state.UI,
 });
