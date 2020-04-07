@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid';
 
 import { connect } from 'react-redux';
 import { getUserData } from '../redux/actions/dataActions';
+import ScreamSkeleton from '../util/ScreamSkeleton';
+import ProfileSkeleton from '../util/ProfileSkeleton';
 
 class user extends Component {
   state = {
@@ -27,22 +29,22 @@ class user extends Component {
     this.props.getUserData(handle);
     axios
       .get(`/user/${handle}`)
-      .then(res => {
+      .then((res) => {
         this.setState({ profile: res.data.user });
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }
   render() {
     const { screams, loading } = this.props.data;
     const { screamIdParam } = this.state;
     const screamsMarkup = loading ? (
-      <p>Loading data...</p>
+      <ScreamSkeleton />
     ) : screams === null ? (
       <p>No screams from this user</p>
     ) : !screamIdParam ? (
-      screams.map(scream => <Scream key={scream.screamId} scream={scream} />)
+      screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
     ) : (
-      screams.map(scream => {
+      screams.map((scream) => {
         if (scream.screamId !== screamIdParam) {
           return <Scream key={scream.screamId} scream={scream} />;
         } else {
@@ -57,7 +59,7 @@ class user extends Component {
         </Grid>
         <Grid item sm={4} xs={12}>
           {this.state.profile === null ? (
-            <p> Loading Profile... </p>
+            <ProfileSkeleton />
           ) : (
             <StaticProfile profile={this.state.profile} />
           )}
@@ -72,7 +74,7 @@ user.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.data,
 });
 export default connect(mapStateToProps, { getUserData })(user);
